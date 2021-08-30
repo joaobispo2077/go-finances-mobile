@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "go-finances-mobile",
+    "slug": "go-finances-mobile",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "go-finances-mobile"
+}
