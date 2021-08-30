@@ -15,5 +15,5 @@ export default {
     title: '#363F5F',
     text: '#969CB2',
     background: '#F0F2F5',
-  }
+  },
 } as const;
