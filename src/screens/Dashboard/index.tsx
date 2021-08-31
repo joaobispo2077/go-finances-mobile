@@ -10,8 +10,8 @@ import {
   UserName,
   UserWrapper,
   Icon,
+  HighlightCardList,
 } from './styles';
-import { RFValue } from 'react-native-responsive-fontsize';
 import { HighlightCard } from '../../components/HighlightCard';
 
 export function Dashboard() {
@@ -26,10 +26,15 @@ export function Dashboard() {
               <UserName>João</UserName>
             </User>
           </UserInfo>
-          <Icon name="power" size={RFValue(24)} color="#FF872C" />
+          <Icon name="power" />
         </UserWrapper>
       </Header>
-      <HighlightCard />
+
+      <HighlightCardList>
+        <HighlightCard />
+        <HighlightCard />
+        <HighlightCard />
+      </HighlightCardList>
     </Container>
   );
 }
