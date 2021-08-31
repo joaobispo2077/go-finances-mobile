@@ -9,16 +9,34 @@ import {
   LastTransaction,
 } from './styles';
 
-export const HighlightCard = () => {
+export type HighlightCardProps = {
+  title: string;
+  amount: string;
+  lastTransaction: string;
+  card: 'income' | 'outcome' | 'total';
+};
+
+const iconByCard: Record<HighlightCardProps['card'], string> = {
+  income: 'arrow-up-circle',
+  outcome: 'arrow-down-circle',
+  total: 'dollar-sign',
+};
+
+export const HighlightCard = ({
+  title,
+  amount,
+  lastTransaction,
+  card,
+}: HighlightCardProps) => {
   return (
-    <Container>
+    <Container card={card}>
       <Header>
-        <Title>Entradas</Title>
-        <TransactionIcon name="arrow-up-circle" />
+        <Title card={card}>{title}</Title>
+        <TransactionIcon name={iconByCard[card]} card={card} />
       </Header>
       <Footer>
-        <Amount>R$ 17.400,00</Amount>
-        <LastTransaction>última entrada dia 13 de abril</LastTransaction>
+        <Amount card={card}>{amount}</Amount>
+        <LastTransaction card={card}>{lastTransaction}</LastTransaction>
       </Footer>
     </Container>
   );

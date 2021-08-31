@@ -31,9 +31,24 @@ export function Dashboard() {
       </Header>
 
       <HighlightCardList>
-        <HighlightCard />
-        <HighlightCard />
-        <HighlightCard />
+        <HighlightCard
+          card="income"
+          title={'Entradas'}
+          amount={'R$ 17.400,00'}
+          lastTransaction={'última entrada dia 13 de abril'}
+        />
+        <HighlightCard
+          card="outcome"
+          title={'Saídas'}
+          amount={'R$ 10.000,00'}
+          lastTransaction={'última entrada dia 19 de abril'}
+        />
+        <HighlightCard
+          card="total"
+          title={'Total'}
+          amount={'R$ 7.000,00'}
+          lastTransaction={'01 à 16 de abril'}
+        />
       </HighlightCardList>
     </Container>
   );
