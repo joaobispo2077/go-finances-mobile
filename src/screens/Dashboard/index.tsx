@@ -17,11 +17,25 @@ import {
 } from './styles';
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard } from '../../components/TransactionCard';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+
+export interface Category {
+  icon: string;
+  label: string;
+}
+
+export interface Transaction {
+  id: string;
+  title: string;
+  amount: string;
+  category: Category;
+  date: string;
+  type: 'income' | 'outcome';
+}
 
 export function Dashboard() {
-  const transactions = [
+  const transactions: Transaction[] = [
     {
+      id: '1',
       title: 'Desenvolvimento de site',
       amount: 'R$ 12.000,00',
       category: {
@@ -32,6 +46,7 @@ export function Dashboard() {
       type: 'income',
     },
     {
+      id: '2',
       title: 'Hamburgueria Pizzy',
       amount: 'R$ 59,00',
       category: {
@@ -42,6 +57,7 @@ export function Dashboard() {
       type: 'outcome',
     },
     {
+      id: '3',
       title: 'Aluguel',
       amount: 'R$ 1.200,00',
       category: {
@@ -92,11 +108,8 @@ export function Dashboard() {
 
         <TransactionList
           data={transactions}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => <TransactionCard transaction={item} />}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: getBottomSpace(),
-          }}
         />
       </Transactions>
     </Container>

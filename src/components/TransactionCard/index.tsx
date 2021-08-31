@@ -1,4 +1,5 @@
 import React from 'react';
+import { Transaction } from '../../screens/Dashboard';
 import {
   Container,
   Title,
@@ -9,19 +10,6 @@ import {
   Name,
   Date,
 } from './styles';
-
-export interface Category {
-  icon: string;
-  label: string;
-}
-
-export interface Transaction {
-  title: string;
-  amount: string;
-  category: Category;
-  date: string;
-  type: 'income' | 'outcome';
-}
 
 export type TransactionCardProps = {
   transaction: Transaction;
