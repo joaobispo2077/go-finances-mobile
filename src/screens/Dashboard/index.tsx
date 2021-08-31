@@ -25,19 +25,31 @@ export function Dashboard() {
       title: 'Desenvolvimento de site',
       amount: 'R$ 12.000,00',
       category: {
-        name: 'dollar-sign',
+        icon: 'dollar-sign',
         label: 'Vendas',
       },
       date: '20/04/2020',
+      type: 'income',
     },
     {
-      title: 'Desenvolvimento de site',
-      amount: 'R$ 12.000,00',
+      title: 'Hamburgueria Pizzy',
+      amount: 'R$ 59,00',
       category: {
-        name: 'dollar-sign',
-        label: 'Vendas',
+        icon: 'coffee',
+        label: 'Alimentação',
       },
-      date: '20/04/2020',
+      date: '10/04/2020',
+      type: 'outcome',
+    },
+    {
+      title: 'Aluguel',
+      amount: 'R$ 1.200,00',
+      category: {
+        icon: 'home',
+        label: 'Casa',
+      },
+      date: '10/04/2020',
+      type: 'outcome',
     },
   ];
   return (
@@ -51,7 +63,7 @@ export function Dashboard() {
               <UserName>João</UserName>
             </User>
           </UserInfo>
-          <Icon name="power" />
+          <Icon icon="power" />
         </UserWrapper>
       </Header>
 

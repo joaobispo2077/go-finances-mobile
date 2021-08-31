@@ -1,6 +1,16 @@
 import styled from 'styled-components/native';
 import { Feather } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
+import { Transaction } from '.';
+
+export type TransactionCardStyleProps = {
+  transactionType: Transaction['type'];
+};
+
+const amountColorByTransactionType = {
+  income: 'success',
+  outcome: 'attention',
+} as const;
 
 export const Container = styled.View`
   background-color: ${({ theme }) => theme.colors.shape};
@@ -18,18 +28,18 @@ export const Title = styled.Text`
 
   color: ${({ theme }) => theme.colors.title};
 `;
-export const Amount = styled.Text`
+
+export const Amount = styled.Text<TransactionCardStyleProps>`
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(20)}px;
   line-height: ${RFValue(30)}px;
 
-  /* .income { */
-  color: ${({ theme }) => theme.colors.success};
-  /* } */
+  color: ${({ theme, transactionType }) => {
+    const selectedTransactionType =
+      amountColorByTransactionType[transactionType];
 
-  /* .outcome {
-    color: ${({ theme }) => theme.colors.attention};
-  } */
+    return theme.colors[selectedTransactionType ?? 'text'];
+  }};
 `;
 
 export const Footer = styled.View`

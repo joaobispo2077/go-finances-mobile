@@ -11,7 +11,7 @@ import {
 } from './styles';
 
 export interface Category {
-  name: string;
+  icon: string;
   label: string;
 }
 
@@ -20,6 +20,7 @@ export interface Transaction {
   amount: string;
   category: Category;
   date: string;
+  type: 'income' | 'outcome';
 }
 
 export type TransactionCardProps = {
@@ -30,10 +31,13 @@ export const TransactionCard = ({ transaction }: TransactionCardProps) => {
   return (
     <Container>
       <Title>{transaction.title}</Title>
-      <Amount>{transaction.amount}</Amount>
+      <Amount transactionType={transaction.type}>
+        {transaction.type === 'outcome' && '-'}
+        {transaction.amount}
+      </Amount>
       <Footer>
         <Category>
-          <Icon name="dollar-sign" />
+          <Icon name={transaction.category.icon} />
           <Name>{transaction.category.label}</Name>
         </Category>
         <Date>{transaction.date}</Date>
