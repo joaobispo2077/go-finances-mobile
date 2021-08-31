@@ -8,6 +8,7 @@ export const Container = styled.View`
   padding: ${RFValue(18)}px ${RFValue(24)}px;
 
   border-radius: ${RFValue(5)}px;
+  margin-bottom: ${RFValue(16)}px;
 `;
 
 export const Title = styled.Text`
