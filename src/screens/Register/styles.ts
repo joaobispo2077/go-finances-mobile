@@ -43,4 +43,5 @@ export const TransactionTypeContainer = styled.View`
   width: 100%;
 
   margin-top: ${RFValue(8)}px;
+  margin-bottom: ${RFValue(16)}px;
 `;
