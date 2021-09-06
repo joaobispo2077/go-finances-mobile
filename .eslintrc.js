@@ -21,7 +21,13 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
+  plugins: [
+    'react',
+    'react-hooks',
+    '@typescript-eslint',
+    'prettier',
+    'eslint-plugin-import-helpers',
+  ],
   settings: {
     react: {
       version: 'detect',
@@ -31,6 +37,14 @@ module.exports = {
     'prettier/prettier': 'error',
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
+    'import-helpers/order-imports': [
+      'warn',
+      {
+        newlinesBetween: 'always',
+        groups: ['module', ['parent', 'sibling', 'index']],
+        alphabetize: { order: 'asc', ignoreCase: true },
+      },
+    ],
   },
   ignorePatterns: ['node_modules', 'ios', 'android', '.expo'],
 };
