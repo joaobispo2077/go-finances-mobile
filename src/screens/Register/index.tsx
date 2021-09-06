@@ -36,44 +36,55 @@ export function Register() {
   };
 
   return (
-    <Container>
-      <Header>
-        <Title>Cadastro</Title>
-      </Header>
-      <Form>
-        <Fields>
-          <Input placeholder="Título" />
-          <Input placeholder="Preço" />
+      <Container>
+        <Header>
+          <Title>Cadastro</Title>
+        </Header>
+        <Form>
+          <Fields>
+            <InputForm
+              placeholder="Título"
+              name="title"
+              control={control}
+              autoCapitalize="sentences"
+              autoCorrect={false}
+            />
+            <InputForm
+              placeholder="Preço"
+              name="amount"
+              control={control}
+              keyboardType="numeric"
+            />
 
-          <TransactionTypeContainer>
-            <TransactionTypeButton
-              type="income"
-              title="Entrada"
-              isActive={transactionType === 'income'}
-              onPress={() => handleTransactionSelect('income')}
+            <TransactionTypeContainer>
+              <TransactionTypeButton
+                type="income"
+                title="Entrada"
+                isActive={transactionType === 'income'}
+                onPress={() => handleTransactionSelect('income')}
+              />
+              <TransactionTypeButton
+                type="outcome"
+                title="Saída"
+                isActive={transactionType === 'outcome'}
+                onPress={() => handleTransactionSelect('outcome')}
+              />
+            </TransactionTypeContainer>
+            <CategorySelectButton
+              title={selectedCategory.name}
+              onPress={handleOpenSelectCategoryModal}
             />
-            <TransactionTypeButton
-              type="outcome"
-              title="Saída"
-              isActive={transactionType === 'outcome'}
-              onPress={() => handleTransactionSelect('outcome')}
-            />
-          </TransactionTypeContainer>
-          <CategorySelectButton
-            title={selectedCategory.name}
-            onPress={handleOpenSelectCategoryModal}
-          />
-        </Fields>
+          </Fields>
         <Button title="Cadastrar" />
       </Form>
 
-      <Modal visible={categoryModalOpen}>
-        <CategorySelect
-          selectedCategory={selectedCategory}
-          setCategory={setSelectedCategory}
-          closeSelectCategory={handleCloseSelectCategoryModal}
-        />
-      </Modal>
-    </Container>
+        <Modal visible={categoryModalOpen}>
+          <CategorySelect
+            selectedCategory={selectedCategory}
+            setCategory={setSelectedCategory}
+            closeSelectCategory={handleCloseSelectCategoryModal}
+          />
+        </Modal>
+      </Container>
   );
 }
