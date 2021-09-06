@@ -20,7 +20,7 @@ export const Container = styled(TouchableOpacity)<ButtonContainerProps>`
       return 'none';
     }
 
-    return `1.5px solid ${theme.colors.text}`;
+    return `1px solid ${theme.colors.text}`;
   }};
 
   border-radius: ${RFValue(5)}px;
@@ -30,7 +30,7 @@ export const Container = styled(TouchableOpacity)<ButtonContainerProps>`
       return 'none';
     }
 
-    return `1.5px solid ${theme.colors.text}`;
+    return `1px solid ${theme.colors.text}`;
   }};
 
   ${({ isActive, theme, type }) =>

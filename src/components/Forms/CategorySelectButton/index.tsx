@@ -1,12 +1,17 @@
 import React from 'react';
 import { Container, Title, Icon } from './styles';
 
-export type CategorySelectProps = {
+export type CategorySelectButtonProps = {
   title: string;
+  onPress: () => void;
 };
-export const CategorySelect = ({ title }: CategorySelectProps) => {
+
+export const CategorySelectButton = ({
+  title,
+  onPress,
+}: CategorySelectButtonProps) => {
   return (
-    <Container>
+    <Container onPress={onPress}>
       <Title>{title}</Title>
       <Icon name="chevron-down" />
     </Container>
