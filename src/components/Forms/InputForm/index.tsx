@@ -18,6 +18,7 @@ export const InputForm = ({
 }: InputFormProps) => {
   return (
     <Container>
+      {error && <Error>{error}</Error>}
       <Controller
         name={name}
         control={control}
@@ -25,7 +26,6 @@ export const InputForm = ({
           <Input onChangeText={onChange} value={value} {...rest} />
         )}
       />
-      {error && <Error>{error}</Error>}
     </Container>
   );
 };
