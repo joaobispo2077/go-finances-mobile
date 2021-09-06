@@ -24,7 +24,15 @@ export type CategorySelectProps = {
   closeSelectCategory: () => void;
 };
 
-export const CategorySelect = () => {
+export const CategorySelect = ({
+  selectedCategory,
+  setCategory,
+  closeSelectCategory,
+}: CategorySelectProps) => {
+  const handleCategorySelect = (category: Category) => {
+    setCategory(category);
+  };
+
   return (
     <Container>
       <Header>
@@ -35,7 +43,10 @@ export const CategorySelect = () => {
         style={{ flex: 1, width: '100%' }}
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => (
-          <Category>
+          <Category
+            isActive={selectedCategory.key === item.key}
+            onPress={() => handleCategorySelect(item)}
+          >
             <Icon name={item.icon} />
             <CategoryTitle>{item.name}</CategoryTitle>
           </Category>
@@ -44,7 +55,7 @@ export const CategorySelect = () => {
       />
 
       <Footer>
-        <Button title="Selecioanr" />
+        <Button title="Selecioanr" onPress={closeSelectCategory} />
       </Footer>
     </Container>
   );
