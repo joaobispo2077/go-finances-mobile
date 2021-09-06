@@ -1,14 +1,21 @@
 import React from 'react';
 import { Control, Controller } from 'react-hook-form';
+
 import { Input, InputProps } from '../Input';
-import { Container } from './styles';
+import { Container, Error } from './styles';
 
 export type InputFormProps = InputProps & {
   control: Control;
   name: string;
+  error: string;
 };
 
-export const InputForm = ({ control, name, ...rest }: InputFormProps) => {
+export const InputForm = ({
+  control,
+  name,
+  error,
+  ...rest
+}: InputFormProps) => {
   return (
     <Container>
       <Controller
@@ -18,6 +25,7 @@ export const InputForm = ({ control, name, ...rest }: InputFormProps) => {
           <Input onChangeText={onChange} value={value} {...rest} />
         )}
       />
+      {error && <Error>{error}</Error>}
     </Container>
   );
 };
