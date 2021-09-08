@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { HighlightCard } from '../../components/HighlightCard';
+import { TransactionCard } from '../../components/TransactionCard';
 import {
   Container,
   Header,
@@ -9,14 +11,13 @@ import {
   UserGreeting,
   UserName,
   UserWrapper,
+  LogoutButton,
   Icon,
   HighlightCardList,
   Transactions,
   Title,
   TransactionList,
 } from './styles';
-import { HighlightCard } from '../../components/HighlightCard';
-import { TransactionCard } from '../../components/TransactionCard';
 
 export interface Category {
   icon: string;
@@ -79,7 +80,9 @@ export function Dashboard() {
               <UserName>João</UserName>
             </User>
           </UserInfo>
-          <Icon icon="power" />
+          <LogoutButton>
+            <Icon name="power" />
+          </LogoutButton>
         </UserWrapper>
       </Header>
 
