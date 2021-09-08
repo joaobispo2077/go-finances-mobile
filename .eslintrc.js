@@ -46,5 +46,5 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ['node_modules', 'ios', 'android', '.expo'],
+  ignorePatterns: ['node_modules', 'ios', 'android', '.expo', '.husky'],
 };
