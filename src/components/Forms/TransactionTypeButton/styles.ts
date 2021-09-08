@@ -8,14 +8,9 @@ import { TransactionTypeButtonProps } from '.';
 
 export type ButtonContainerProps = Omit<TransactionTypeButtonProps, 'title'>;
 
-export const Container = styled(RectButton)<ButtonContainerProps>`
+type ContainerProps = Pick<ButtonContainerProps, 'isActive' | 'type'>;
+export const Container = styled.View<ContainerProps>`
   width: 48%;
-
-  padding: ${RFValue(16)}px;
-
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
 
   border: ${({ isActive, theme }) => {
     if (isActive) {
@@ -50,7 +45,15 @@ export const Container = styled(RectButton)<ButtonContainerProps>`
     `}
 `;
 
-export const Icon = styled(Feather)<TransactionTypeButtonProps>`
+export const Button = styled(RectButton)`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  padding: ${RFValue(16)}px;
+`;
+
+export const Icon = styled(Feather)<Pick<TransactionTypeButtonProps, 'type'>>`
   font-size: ${RFValue(24)}px;
 
   color: ${({ theme, type }) =>
