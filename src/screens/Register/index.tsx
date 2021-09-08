@@ -1,7 +1,8 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Keyboard, Modal, TouchableWithoutFeedback, Alert } from 'react-native';
+
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Button } from '../../components/Forms/Button';
