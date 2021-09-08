@@ -1,12 +1,14 @@
-import styled, { css } from 'styled-components/native';
-import { Feather } from '@expo/vector-icons';
-import { TransactionTypeButtonProps } from '.';
+import { RectButton } from 'react-native-gesture-handler';
 import { RFValue } from 'react-native-responsive-fontsize';
-import { TouchableOpacity } from 'react-native';
+
+import { Feather } from '@expo/vector-icons';
+import styled, { css } from 'styled-components/native';
+
+import { TransactionTypeButtonProps } from '.';
 
 export type ButtonContainerProps = Omit<TransactionTypeButtonProps, 'title'>;
 
-export const Container = styled(TouchableOpacity)<ButtonContainerProps>`
+export const Container = styled(RectButton)<ButtonContainerProps>`
   width: 48%;
 
   padding: ${RFValue(16)}px;

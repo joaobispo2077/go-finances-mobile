@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Container, Title, Icon } from './styles';
 
 export type CategorySelectButtonProps = {

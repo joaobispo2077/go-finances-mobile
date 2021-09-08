@@ -1,8 +1,9 @@
 import React from 'react';
-import { TouchableOpacityProps } from 'react-native';
+import { RectButtonProps } from 'react-native-gesture-handler';
+
 import { Container, Icon, Title } from './styles';
 
-export type TransactionTypeButtonProps = TouchableOpacityProps & {
+export type TransactionTypeButtonProps = RectButtonProps & {
   type: 'income' | 'outcome';
   title: string;
   isActive: boolean;
