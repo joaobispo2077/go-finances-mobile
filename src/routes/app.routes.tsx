@@ -22,6 +22,7 @@ export function AppRoutes() {
           paddingVertical: Platform.OS === 'ios' ? 20 : 0,
           height: 88,
         },
+        headerShown: false,
       }}
     >
       <Screen
