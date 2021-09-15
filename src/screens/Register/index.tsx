@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Keyboard, Modal, TouchableWithoutFeedback, Alert } from 'react-native';
 
@@ -84,23 +84,19 @@ export function Register() {
     console.log(transaction);
 
     try {
-      // const oldTransactions = AsyncStorage.getItem(collectionKey);
-      // const newTransactions = oldTransactions
-      //   ? JSON.parse(oldTransactions)
-      //   : [];
-      await AsyncStorage.setItem(collectionKey, JSON.stringify([transaction]));
+      const oldTransactions = await AsyncStorage.getItem(collectionKey);
+      const newTransactions = oldTransactions
+        ? JSON.parse(oldTransactions).concat(transaction)
+        : [transaction];
+
+      await AsyncStorage.setItem(
+        collectionKey,
+        JSON.stringify(newTransactions),
+      );
     } catch (error) {
       Alert.alert('Não foi possível salvar');
     }
   };
-
-  useEffect(() => {
-    async function loadTransactions() {
-      const recoverTransactions = await AsyncStorage.getItem(collectionKey);
-      console.log(JSON.parse(recoverTransactions ? recoverTransactions : '[]'));
-    }
-    loadTransactions();
-  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
