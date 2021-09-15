@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Keyboard, Modal, TouchableWithoutFeedback, Alert } from 'react-native';
+import uuid from 'react-native-uuid';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
 import * as yup from 'yup';
 
 import { Button } from '../../components/Forms/Button';
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton';
 import { InputForm } from '../../components/Forms/InputForm';
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton';
+import { RootBottomTabParamList } from '../../routes/app.routes';
 import { CategorySelect } from '../CategorySelect';
 import {
   Container,
@@ -36,6 +40,8 @@ const schema = yup.object().shape({
 
 export function Register() {
   const collectionKey = '@gofinances:transactions';
+  const navigation =
+    useNavigation<BottomTabNavigationProp<RootBottomTabParamList>>();
 
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -48,6 +54,7 @@ export function Register() {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -65,6 +72,15 @@ export function Register() {
     setCategoryModalOpen(false);
   };
 
+  const resetForm = () => {
+    setTransactionType('');
+    setSelectedCategory({
+      key: 'default',
+      name: 'Selecione uma categoria',
+    });
+    reset();
+  };
+
   const handleRegister = async (form: FormData) => {
     if (!transactionType) {
       return Alert.alert('Selecione o tipo da transação');
@@ -75,10 +91,12 @@ export function Register() {
     }
 
     const transaction = {
+      id: uuid.v4(),
       title: form.title,
       amount: Number(form.amount),
       type: transactionType,
       category: selectedCategory.key,
+      date: new Date(),
     };
 
     console.log(transaction);
@@ -93,7 +111,11 @@ export function Register() {
         collectionKey,
         JSON.stringify(newTransactions),
       );
+
+      resetForm();
+      navigation.navigate('Listagem');
     } catch (error) {
+      console.log(error);
       Alert.alert('Não foi possível salvar');
     }
   };
