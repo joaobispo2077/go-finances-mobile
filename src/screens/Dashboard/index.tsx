@@ -1,5 +1,7 @@
 import React from 'react';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard } from '../../components/TransactionCard';
 import {
@@ -19,56 +21,45 @@ import {
   TransactionList,
 } from './styles';
 
-export interface Category {
-  icon: string;
-  label: string;
-}
-
 export interface Transaction {
   id: string;
   title: string;
   amount: string;
-  category: Category;
+  category: string;
   date: string;
   type: 'income' | 'outcome';
 }
 
 export function Dashboard() {
-  const transactions: Transaction[] = [
-    {
-      id: '1',
-      title: 'Desenvolvimento de site',
-      amount: 'R$ 12.000,00',
-      category: {
-        icon: 'dollar-sign',
-        label: 'Vendas',
-      },
-      date: '20/04/2020',
-      type: 'income',
-    },
-    {
-      id: '2',
-      title: 'Hamburgueria Pizzy',
-      amount: 'R$ 59,00',
-      category: {
-        icon: 'coffee',
-        label: 'Alimentação',
-      },
-      date: '10/04/2020',
-      type: 'outcome',
-    },
-    {
-      id: '3',
-      title: 'Aluguel',
-      amount: 'R$ 1.200,00',
-      category: {
-        icon: 'home',
-        label: 'Casa',
-      },
-      date: '10/04/2020',
-      type: 'outcome',
-    },
-  ];
+  const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+
+  const loadTransactions = async () => {
+    const collectionKey = '@gofinances:transactions';
+
+    const response = await AsyncStorage.getItem(collectionKey);
+    if (response) {
+      const recoveredTransactions =
+        (JSON.parse(response) as Transaction[]) || [];
+
+      const formattedTransaction = recoveredTransactions.map((transaction) => ({
+        ...transaction,
+        amount: Number(transaction.amount).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+        date: Intl.DateTimeFormat('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit',
+        }).format(new Date(transaction.date)),
+      }));
+      setTransactions(formattedTransaction);
+    }
+  };
+  React.useEffect(() => {
+    loadTransactions();
+  }, []);
+
   return (
     <Container>
       <Header>

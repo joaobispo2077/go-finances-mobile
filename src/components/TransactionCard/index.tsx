@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Transaction } from '../../screens/Dashboard';
+import { categories } from '../../utils/categories';
 import {
   Container,
   Title,
@@ -16,6 +18,10 @@ export type TransactionCardProps = {
 };
 
 export const TransactionCard = ({ transaction }: TransactionCardProps) => {
+  const category = categories.find(
+    (category) => category.key === transaction.category,
+  );
+
   return (
     <Container>
       <Title>{transaction.title}</Title>
@@ -25,8 +31,8 @@ export const TransactionCard = ({ transaction }: TransactionCardProps) => {
       </Amount>
       <Footer>
         <Category>
-          <Icon name={transaction.category.icon} />
-          <Name>{transaction.category.label}</Name>
+          <Icon name={category?.icon} />
+          <Name>{category?.name}</Name>
         </Category>
         <Date>{transaction.date}</Date>
       </Footer>

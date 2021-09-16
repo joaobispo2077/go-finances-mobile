@@ -39,7 +39,6 @@ const schema = yup.object().shape({
 });
 
 export function Register() {
-  const collectionKey = '@gofinances:transactions';
   const navigation =
     useNavigation<BottomTabNavigationProp<RootBottomTabParamList>>();
 
@@ -102,6 +101,8 @@ export function Register() {
     console.log(transaction);
 
     try {
+      const collectionKey = '@gofinances:transactions';
+
       const oldTransactions = await AsyncStorage.getItem(collectionKey);
       const newTransactions = oldTransactions
         ? JSON.parse(oldTransactions).concat(transaction)
