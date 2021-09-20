@@ -26,7 +26,7 @@ export const TransactionCard = ({ transaction }: TransactionCardProps) => {
     <Container>
       <Title>{transaction.title}</Title>
       <Amount transactionType={transaction.type}>
-        {transaction.type === 'outcome' && '-'}
+        {transaction.type === 'outcome' && '- '}
         {transaction.amount}
       </Amount>
       <Footer>
