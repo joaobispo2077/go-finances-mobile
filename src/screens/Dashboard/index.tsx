@@ -31,13 +31,86 @@ export interface Transaction {
   type: 'income' | 'outcome';
 }
 
+export interface HighlightHeader {
+  amount: string;
+  lastDate: string | undefined;
+}
+export interface HighlightTransactions {
+  income: HighlightHeader;
+  outcome: HighlightHeader;
+  total: HighlightHeader;
+}
+
 export function Dashboard() {
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
-  const [incomeTransactionsBalance, setIncomeTransactionsBalance] =
-    useState('');
-  const [outcomeTransactionsBalance, setOutcomeTransactionsBalance] =
-    useState('');
-  const [totalTransactionsBalance, setTotalTransactionsBalance] = useState('');
+  const [highlightTransactions, setHighlightTransactions] =
+    useState<HighlightTransactions>({
+      income: {
+        amount: '',
+        lastDate: '',
+      },
+      outcome: {
+        amount: '',
+        lastDate: '',
+      },
+      total: {
+        amount: '',
+        lastDate: '',
+      },
+    });
+
+  const formatToCurrency = (value: number | string): string => {
+    return Number(value).toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  };
+
+  const loadTransactionsHighlight = (recoveredTransactions: Transaction[]) => {
+    const transactionsHeaders = recoveredTransactions.reduce(
+      (acc, transaction) => {
+        if (transaction.type === 'income') {
+          acc.income += Number(transaction.amount);
+        }
+
+        if (transaction.type === 'outcome') {
+          acc.outcome += Number(transaction.amount);
+        }
+
+        return acc;
+      },
+      {
+        income: 0,
+        outcome: 0,
+      },
+    );
+
+    const lastIncome = recoveredTransactions
+      .reverse()
+      .find((transaction) => transaction.type === 'income');
+
+    const lastOutcome = recoveredTransactions
+      .reverse()
+      .find((transaction) => transaction.type === 'outcome');
+
+    const totalTransactionsCurrency =
+      transactionsHeaders.income - transactionsHeaders.outcome;
+
+    setHighlightTransactions({
+      income: {
+        amount: formatToCurrency(transactionsHeaders.income),
+        lastDate: lastIncome?.date,
+      },
+      outcome: {
+        amount: formatToCurrency(transactionsHeaders.outcome),
+        lastDate: lastOutcome?.date,
+      },
+      total: {
+        amount: formatToCurrency(totalTransactionsCurrency),
+        lastDate: lastIncome?.date,
+      },
+    });
+  };
 
   const loadTransactions = async () => {
     const collectionKey = '@gofinances:transactions';
@@ -60,48 +133,7 @@ export function Dashboard() {
         }).format(new Date(transaction.date)),
       }));
 
-      const transactionsHeaders = recoveredTransactions.reduce(
-        (acc, transaction) => {
-          if (transaction.type === 'income') {
-            acc.total += Number(transaction.amount);
-            acc.income += Number(transaction.amount);
-          }
-
-          if (transaction.type === 'outcome') {
-            acc.total -= Number(transaction.amount);
-            acc.outcome -= Number(transaction.amount);
-          }
-
-          return acc;
-        },
-        {
-          income: 0,
-          outcome: 0,
-          total: 0,
-        },
-      );
-
-      setIncomeTransactionsBalance(
-        Number(transactionsHeaders.income).toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }),
-      );
-
-      setOutcomeTransactionsBalance(
-        Number(transactionsHeaders.outcome).toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }),
-      );
-
-      setTotalTransactionsBalance(
-        Number(transactionsHeaders.total).toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        }),
-      );
-
+      loadTransactionsHighlight(recoveredTransactions);
       setTransactions(formattedTransaction);
     }
   };
@@ -109,6 +141,7 @@ export function Dashboard() {
   useFocusEffect(
     useCallback(() => {
       loadTransactions();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []),
   );
 
@@ -133,19 +166,19 @@ export function Dashboard() {
         <HighlightCard
           card="income"
           title={'Entradas'}
-          amount={incomeTransactionsBalance}
+          amount={highlightTransactions?.income?.amount}
           lastTransaction={'última entrada dia 13 de abril'}
         />
         <HighlightCard
           card="outcome"
           title={'Saídas'}
-          amount={outcomeTransactionsBalance}
+          amount={highlightTransactions?.outcome?.amount}
           lastTransaction={'última entrada dia 19 de abril'}
         />
         <HighlightCard
           card="total"
           title={'Total'}
-          amount={totalTransactionsBalance}
+          amount={highlightTransactions?.total?.amount}
           lastTransaction={'01 à 16 de abril'}
         />
       </HighlightCardList>
