@@ -17,6 +17,8 @@ export const Container = styled.View<ContainerProps>`
   border-radius: ${RFValue(5)}px;
   border-left-width: ${RFValue(5)}px;
   border-left-color: ${({ color }) => color};
+
+  margin-bottom: ${RFValue(10)}px;
 `;
 
 export const Title = styled.Text`

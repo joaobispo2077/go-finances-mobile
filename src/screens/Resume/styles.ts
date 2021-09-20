@@ -24,3 +24,16 @@ export const Title = styled.Text`
   font-size: ${RFValue(18)}px;
   color: ${({ theme }) => theme.colors.background};
 `;
+
+export const HistoryCardList = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+})`
+  margin-top: ${RFValue(32)}px;
+  padding: 0 ${RFValue(24)}px;
+`;
+
+export const LoadingContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
