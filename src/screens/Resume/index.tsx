@@ -5,6 +5,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from '@react-navigation/core';
+import { addMonths } from 'date-fns';
 import { useTheme } from 'styled-components';
 import { VictoryPie } from 'victory-native';
 
@@ -24,7 +25,6 @@ import {
   MonthSelectIcon,
   MonthTitle,
 } from './styles';
-
 type CategoryAmount = typeof categories[0] & {
   amount: number;
   percent: string;
@@ -33,6 +33,7 @@ type CategoryAmount = typeof categories[0] & {
 export const Resume = () => {
   const theme = useTheme();
 
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] =
     useState<CategoryAmount[]>();
 
@@ -80,6 +81,19 @@ export const Resume = () => {
     }
   };
 
+  const formatDateLong = (date: Date) => {
+    return Intl.DateTimeFormat('pt-BR', {
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(date));
+  };
+
+  const handleChangeSelectedDate = (changer: 'prev' | 'next') => {
+    const months = changer === 'prev' ? -1 : 1;
+
+    setSelectedDate((previousDate) => addMonths(previousDate, months));
+  };
+
   useFocusEffect(
     useCallback(() => {
       loadTransactionsTotalByCategory();
@@ -98,11 +112,11 @@ export const Resume = () => {
         }}
       >
         <MonthSelect>
-          <MonthSelectButton>
+          <MonthSelectButton onPress={() => handleChangeSelectedDate('prev')}>
             <MonthSelectIcon name="chevron-left" />
           </MonthSelectButton>
-          <MonthTitle>setembro, 2020</MonthTitle>
-          <MonthSelectButton>
+          <MonthTitle>{formatDateLong(selectedDate)}</MonthTitle>
+          <MonthSelectButton onPress={() => handleChangeSelectedDate('next')}>
             <MonthSelectIcon name="chevron-right" />
           </MonthSelectButton>
         </MonthSelect>
