@@ -72,6 +72,13 @@ export function Dashboard() {
     });
   };
 
+  const formatToLongDate = (value: string | number | Date): string => {
+    return Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+    }).format(new Date(value));
+  };
+
   const loadTransactionsHighlight = (recoveredTransactions: Transaction[]) => {
     const transactionsHeaders = recoveredTransactions.reduce(
       (acc, transaction) => {
@@ -91,29 +98,50 @@ export function Dashboard() {
       },
     );
 
-    const lastIncome = recoveredTransactions
-      .reverse()
-      .find((transaction) => transaction.type === 'income');
+    const lastIncome = Math.max(
+      ...recoveredTransactions
+        .filter((transaction) => transaction.type === 'income')
+        .map((transaction) => new Date(transaction.date).getTime()),
+    );
 
-    const lastOutcome = recoveredTransactions
-      .reverse()
-      .find((transaction) => transaction.type === 'outcome');
+    const lastOutcome = Math.max(
+      ...recoveredTransactions
+        .filter((transaction) => transaction.type === 'outcome')
+        .map((transaction) => new Date(transaction.date).getTime()),
+    );
 
     const totalTransactionsCurrency =
       transactionsHeaders.income - transactionsHeaders.outcome;
+    const lastDate = Math.max(lastIncome, lastOutcome);
+    const firstDate = Math.min(
+      Math.min(
+        ...recoveredTransactions
+          .filter((transaction) => transaction.type === 'income')
+          .map((transaction) => new Date(transaction.date).getTime()),
+      ),
+      Math.min(
+        ...recoveredTransactions
+          .filter((transaction) => transaction.type === 'outcome')
+          .map((transaction) => new Date(transaction.date).getTime()),
+      ),
+    );
+
+    const intervalTotal = `${formatToLongDate(firstDate)} à ${formatToLongDate(
+      lastDate,
+    )}`;
 
     setHighlightTransactions({
       income: {
         amount: formatToCurrency(transactionsHeaders.income),
-        lastDate: lastIncome?.date,
+        lastDate: formatToLongDate(lastIncome),
       },
       outcome: {
         amount: formatToCurrency(transactionsHeaders.outcome),
-        lastDate: lastOutcome?.date,
+        lastDate: formatToLongDate(lastOutcome),
       },
       total: {
         amount: formatToCurrency(totalTransactionsCurrency),
-        lastDate: lastIncome?.date,
+        lastDate: intervalTotal,
       },
     });
   };
@@ -181,19 +209,19 @@ export function Dashboard() {
               card="income"
               title={'Entradas'}
               amount={highlightTransactions?.income?.amount}
-              lastTransaction={'última entrada dia 13 de abril'}
+              lastTransaction={`Última entrada dia ${highlightTransactions?.income?.lastDate}`}
             />
             <HighlightCard
               card="outcome"
               title={'Saídas'}
               amount={highlightTransactions?.outcome?.amount}
-              lastTransaction={'última entrada dia 19 de abril'}
+              lastTransaction={`Última entrada dia ${highlightTransactions?.outcome?.lastDate}`}
             />
             <HighlightCard
               card="total"
               title={'Total'}
               amount={highlightTransactions?.total?.amount}
-              lastTransaction={'01 à 16 de abril'}
+              lastTransaction={highlightTransactions?.total?.lastDate || ''}
             />
           </HighlightCardList>
           <Transactions>
