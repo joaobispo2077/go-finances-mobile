@@ -39,6 +39,16 @@ export const Resume = () => {
   const [totalByCategories, setTotalByCategories] =
     useState<CategoryAmount[]>();
 
+  const isOutcomeTransaction = (transaction: Transaction): boolean =>
+    transaction.type === 'outcome';
+
+  const isTransactionInSelectedMonth = (transaction: Transaction): boolean =>
+    new Date(transaction.date).getMonth() === new Date(selectedDate).getMonth();
+
+  const isTransactionInSelectedYear = (transaction: Transaction): boolean =>
+    new Date(transaction.date).getFullYear() ===
+    new Date(selectedDate).getFullYear();
+
   const loadTransactionsTotalByCategory = async () => {
     const transactionsKey = config.asyncStorage.keys.transactions;
 
@@ -49,11 +59,9 @@ export const Resume = () => {
 
       const outcomeTransactions = recoveredTransactions.filter(
         (transaction) =>
-          transaction.type === 'outcome' &&
-          new Date(transaction.date).getMonth() ===
-            new Date(selectedDate).getMonth() &&
-          new Date(transaction.date).getFullYear() ===
-            new Date(selectedDate).getFullYear(),
+          isOutcomeTransaction(transaction) &&
+          isTransactionInSelectedMonth(transaction) &&
+          isTransactionInSelectedYear(transaction),
       );
 
       const outcomeTotal = outcomeTransactions.reduce(
