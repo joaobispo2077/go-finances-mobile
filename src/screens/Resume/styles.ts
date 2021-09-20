@@ -27,9 +27,12 @@ export const Title = styled.Text`
 
 export const HistoryCardList = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
+  contentContainerStyle: {
+    flex: 1,
+    padding: RFValue(24),
+  },
 })`
-  margin-top: ${RFValue(32)}px;
-  padding: 0 ${RFValue(24)}px;
+  margin-top: ${RFValue(8)}px;
 `;
 
 export const LoadingContainer = styled.View`
