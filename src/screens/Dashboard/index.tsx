@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/core';
@@ -33,6 +33,11 @@ export interface Transaction {
 
 export function Dashboard() {
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+  const [incomeTransactionsBalance, setIncomeTransactionsBalance] =
+    useState('');
+  const [outcomeTransactionsBalance, setOutcomeTransactionsBalance] =
+    useState('');
+  const [totalTransactionsBalance, setTotalTransactionsBalance] = useState('');
 
   const loadTransactions = async () => {
     const collectionKey = '@gofinances:transactions';
@@ -54,6 +59,49 @@ export function Dashboard() {
           year: '2-digit',
         }).format(new Date(transaction.date)),
       }));
+
+      const transactionsHeaders = recoveredTransactions.reduce(
+        (acc, transaction) => {
+          if (transaction.type === 'income') {
+            acc.total += Number(transaction.amount);
+            acc.income += Number(transaction.amount);
+          }
+
+          if (transaction.type === 'outcome') {
+            acc.total -= Number(transaction.amount);
+            acc.outcome -= Number(transaction.amount);
+          }
+
+          return acc;
+        },
+        {
+          income: 0,
+          outcome: 0,
+          total: 0,
+        },
+      );
+
+      setIncomeTransactionsBalance(
+        Number(transactionsHeaders.income).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+      );
+
+      setOutcomeTransactionsBalance(
+        Number(transactionsHeaders.outcome).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+      );
+
+      setTotalTransactionsBalance(
+        Number(transactionsHeaders.total).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        }),
+      );
+
       setTransactions(formattedTransaction);
     }
   };
@@ -85,19 +133,19 @@ export function Dashboard() {
         <HighlightCard
           card="income"
           title={'Entradas'}
-          amount={'R$ 17.400,00'}
+          amount={incomeTransactionsBalance}
           lastTransaction={'última entrada dia 13 de abril'}
         />
         <HighlightCard
           card="outcome"
           title={'Saídas'}
-          amount={'R$ 10.000,00'}
+          amount={outcomeTransactionsBalance}
           lastTransaction={'última entrada dia 19 de abril'}
         />
         <HighlightCard
           card="total"
           title={'Total'}
-          amount={'R$ 7.000,00'}
+          amount={totalTransactionsBalance}
           lastTransaction={'01 à 16 de abril'}
         />
       </HighlightCardList>
