@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components/native';
 
 import { Dashboard } from '../screens/Dashboard';
 import { Register } from '../screens/Register';
+import { Resume } from '../screens/Resume';
 
 export type RootBottomTabParamList = {
   Listagem: undefined;
@@ -56,7 +57,7 @@ export function AppRoutes() {
       />
       <Screen
         name="Resumo"
-        component={Register}
+        component={Resume}
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="pie-chart" color={color} size={size} />

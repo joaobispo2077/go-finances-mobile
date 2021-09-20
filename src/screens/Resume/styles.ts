@@ -24,25 +24,3 @@ export const Title = styled.Text`
   font-size: ${RFValue(18)}px;
   color: ${({ theme }) => theme.colors.background};
 `;
-
-export const Form = styled.View`
-  flex: 1;
-
-  width: 100%;
-
-  padding: ${RFValue(24)}px;
-
-  justify-content: space-between;
-`;
-
-export const Fields = styled.View``;
-
-export const TransactionTypeContainer = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-
-  width: 100%;
-
-  margin-top: ${RFValue(8)}px;
-  margin-bottom: ${RFValue(16)}px;
-`;
