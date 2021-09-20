@@ -25,21 +25,11 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.background};
 `;
 
-export const HistoryCardList = styled.ScrollView.attrs({
-  showsVerticalScrollIndicator: false,
-  contentContainerStyle: {
-    flex: 1,
-    padding: RFValue(24),
-  },
-})`
-  margin-top: ${RFValue(8)}px;
-`;
+export const HistoryCardList = styled.ScrollView``;
 
 export const ChartContainer = styled.View`
   width: 100%;
   align-items: center;
-
-  padding: ${RFValue(8)}px;
 `;
 
 export const LoadingContainer = styled.View`

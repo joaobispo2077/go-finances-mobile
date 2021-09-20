@@ -1,7 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState, useCallback } from 'react';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from '@react-navigation/core';
 import { useTheme } from 'styled-components';
 import { VictoryPie } from 'victory-native';
@@ -84,23 +86,29 @@ export const Resume = () => {
       <Header>
         <Title>Resumo por categoria</Title>
       </Header>
-      <ChartContainer>
-        <VictoryPie
-          data={totalByCategories}
-          colorScale={totalByCategories?.map((category) => category.color)}
-          style={{
-            labels: {
-              fontSize: RFValue(18),
-              fontWeight: 'bold',
-              fill: theme.colors.shape,
-            },
-          }}
-          labelRadius={50}
-          x="percent"
-          y="amount"
-        />
-      </ChartContainer>
-      <HistoryCardList>
+      <HistoryCardList
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingHorizontal: 24,
+          paddingBottom: useBottomTabBarHeight(),
+        }}
+      >
+        <ChartContainer>
+          <VictoryPie
+            data={totalByCategories}
+            colorScale={totalByCategories?.map((category) => category.color)}
+            style={{
+              labels: {
+                fontSize: RFValue(18),
+                fontWeight: 'bold',
+                fill: theme.colors.shape,
+              },
+            }}
+            labelRadius={50}
+            x="percent"
+            y="amount"
+          />
+        </ChartContainer>
         {totalByCategories?.map((category) => (
           <HistoryCard
             key={category.key}
