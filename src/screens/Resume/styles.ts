@@ -35,6 +35,13 @@ export const HistoryCardList = styled.ScrollView.attrs({
   margin-top: ${RFValue(8)}px;
 `;
 
+export const ChartContainer = styled.View`
+  width: 100%;
+  align-items: center;
+
+  padding: ${RFValue(8)}px;
+`;
+
 export const LoadingContainer = styled.View`
   flex: 1;
   justify-content: center;
