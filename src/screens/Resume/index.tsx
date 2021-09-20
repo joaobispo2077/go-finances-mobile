@@ -17,8 +17,12 @@ import {
   ChartContainer,
   Container,
   Header,
-  HistoryCardList,
+  Content,
   Title,
+  MonthSelect,
+  MonthSelectButton,
+  MonthSelectIcon,
+  MonthTitle,
 } from './styles';
 
 type CategoryAmount = typeof categories[0] & {
@@ -86,13 +90,23 @@ export const Resume = () => {
       <Header>
         <Title>Resumo por categoria</Title>
       </Header>
-      <HistoryCardList
+      <Content
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingHorizontal: 24,
           paddingBottom: useBottomTabBarHeight(),
         }}
       >
+        <MonthSelect>
+          <MonthSelectButton>
+            <MonthSelectIcon name="chevron-left" />
+          </MonthSelectButton>
+          <MonthTitle>setembro, 2020</MonthTitle>
+          <MonthSelectButton>
+            <MonthSelectIcon name="chevron-right" />
+          </MonthSelectButton>
+        </MonthSelect>
+
         <ChartContainer>
           <VictoryPie
             data={totalByCategories}
@@ -117,7 +131,7 @@ export const Resume = () => {
             color={category.color}
           />
         ))}
-      </HistoryCardList>
+      </Content>
     </Container>
   );
 };
