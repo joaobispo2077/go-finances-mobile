@@ -5,7 +5,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from '@react-navigation/core';
-import { addMonths } from 'date-fns';
+import { addMonths, subMonths, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { useTheme } from 'styled-components';
 import { VictoryPie } from 'victory-native';
 
@@ -25,6 +26,7 @@ import {
   MonthSelectIcon,
   MonthTitle,
 } from './styles';
+
 type CategoryAmount = typeof categories[0] & {
   amount: number;
   percent: string;
@@ -46,7 +48,12 @@ export const Resume = () => {
         (JSON.parse(response) as Transaction[]) || [];
 
       const outcomeTransactions = recoveredTransactions.filter(
-        (transaction) => transaction.type === 'outcome',
+        (transaction) =>
+          transaction.type === 'outcome' &&
+          new Date(transaction.date).getMonth() ===
+            new Date(selectedDate).getMonth() &&
+          new Date(transaction.date).getFullYear() ===
+            new Date(selectedDate).getFullYear(),
       );
 
       const outcomeTotal = outcomeTransactions.reduce(
@@ -82,22 +89,24 @@ export const Resume = () => {
   };
 
   const formatDateLong = (date: Date) => {
-    return Intl.DateTimeFormat('pt-BR', {
-      month: 'long',
-      year: 'numeric',
-    }).format(new Date(date));
+    return format(date, 'MMMM, yyyy', { locale: ptBR });
   };
 
   const handleChangeSelectedDate = (changer: 'prev' | 'next') => {
-    const months = changer === 'prev' ? -1 : 1;
+    if (changer === 'prev') {
+      setSelectedDate((previousDate) => addMonths(previousDate, 1));
+    }
 
-    setSelectedDate((previousDate) => addMonths(previousDate, months));
+    if (changer === 'next') {
+      setSelectedDate((previousDate) => subMonths(previousDate, 1));
+    }
   };
 
   useFocusEffect(
     useCallback(() => {
       loadTransactionsTotalByCategory();
-    }, []),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedDate]),
   );
   return (
     <Container>
