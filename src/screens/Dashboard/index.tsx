@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard } from '../../components/TransactionCard';
+import { formatToCurrency } from '../../utils/currency';
 import {
   Container,
   Header,
@@ -64,13 +65,6 @@ export function Dashboard() {
         lastDate: '',
       },
     });
-
-  const formatToCurrency = (value: number | string): string => {
-    return Number(value).toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    });
-  };
 
   const formatToLongDate = (value: string | number | Date): string => {
     return Intl.DateTimeFormat('pt-BR', {
