@@ -54,6 +54,8 @@ export const Resume = () => {
     new Date(selectedDate).getFullYear();
 
   const loadTransactionsTotalByCategory = async () => {
+    setIsLoading(true);
+
     const transactionsKey = config.asyncStorage.keys.transactions;
 
     const response = await AsyncStorage.getItem(transactionsKey);
@@ -106,8 +108,6 @@ export const Resume = () => {
   };
 
   const handleChangeSelectedDate = (changer: 'prev' | 'next') => {
-    setIsLoading(true);
-
     if (changer === 'prev') {
       setSelectedDate((previousDate) => addMonths(previousDate, 1));
     }
