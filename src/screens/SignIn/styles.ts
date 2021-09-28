@@ -41,4 +41,16 @@ export const SignTitle = styled.Text`
   margin-bottom: ${RFValue(67)}px;
 `;
 
-export const Footer = styled.View``;
+export const Footer = styled.View`
+  width: 100%;
+  height: 30%;
+
+  background-color: ${({ theme }) => theme.colors.secondary};
+`;
+
+export const LoginButtons = styled.View`
+  margin-top: ${RFValue(-29)}px;
+
+  justify-content: center;
+  align-items: center;
+`;
