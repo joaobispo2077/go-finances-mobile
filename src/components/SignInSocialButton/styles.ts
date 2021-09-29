@@ -12,13 +12,13 @@ export const Button = styled(RectButton)`
 
   background-color: ${({ theme }) => theme.colors.shape};
 
-  border-radius: ${RFValue(4)};
+  border-radius: ${RFValue(4)}px;
   margin-bottom: ${RFValue(16)}px;
 `;
 
 export const SvgContainer = styled.View`
   border-right-color: ${({ theme }) => theme.colors.background};
-  border-right-width: ${RFValue(1)};
+  border-right-width: ${RFValue(1)}px;
 
   justify-content: center;
   align-items: center;

@@ -2,10 +2,9 @@
   "expo": {
     "name": "go-finances-mobile",
     "slug": "go-finances-mobile",
+    "schema": "go-finances-mobile",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ]
+    "assetBundlePatterns": ["**/*"]
   },
   "name": "go-finances-mobile"
 }
