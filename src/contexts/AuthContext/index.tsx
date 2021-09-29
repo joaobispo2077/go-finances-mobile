@@ -2,6 +2,8 @@ import React, { createContext, useState } from 'react';
 
 import * as AuthSession from 'expo-auth-session';
 
+const { GOOGLE_OAUTH_CLIENT_ID } = process.env;
+const { GOOGLE_OAUTH_REDIRECT_URI } = process.env;
 interface IUser {
   id: string;
   name: string;
@@ -28,20 +30,13 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   async function signInWithGoogle() {
     try {
-      const {
-        GOOGLE_OAUTH_CLIENT_ID,
-        GOOGLE_OAUTH_REDIRECT_URI,
-        GOOGLE_OAUTH_RESPONSE_TYPE,
-        GOOGLE_OAUTH_SCOPE,
-      } = process.env;
-
       const CLIENT_ID = GOOGLE_OAUTH_CLIENT_ID;
       const REDIRECT_URI = GOOGLE_OAUTH_REDIRECT_URI;
-      const RESPONSE_TYPE = GOOGLE_OAUTH_RESPONSE_TYPE;
-      const SCOPE = encodeURI(GOOGLE_OAUTH_SCOPE as string);
+      const RESPONSE_TYPE = 'token';
+      const SCOPE = encodeURI('profile email');
 
       const authURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
-
+      console.log(authURL);
       const { type, params } = (await AuthSession.startAsync({
         authUrl: authURL,
       })) as AuthResponse;
