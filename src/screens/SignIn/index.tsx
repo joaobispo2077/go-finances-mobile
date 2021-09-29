@@ -5,6 +5,7 @@ import AppleLogo from '../../assets/apple_logo.svg';
 import GoFinancesLogo from '../../assets/gofinances_logotipo.svg';
 import GoogleLogo from '../../assets/google_logo.svg';
 import { SignInSocialButton } from '../../components/SignInSocialButton';
+import { useAuth } from '../../hooks/useAuth';
 import {
   Container,
   Header,
@@ -16,6 +17,9 @@ import {
 } from './styles';
 
 export const SignIn = () => {
+  const auth = useAuth();
+  console.log(auth);
+
   return (
     <Container>
       <Header>
