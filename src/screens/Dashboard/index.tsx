@@ -47,7 +47,7 @@ export interface HighlightTransactions {
 }
 
 export function Dashboard() {
-  const { signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const theme = useTheme();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -67,6 +67,13 @@ export function Dashboard() {
         lastDate: '',
       },
     });
+
+  const defaultAvatar = `https://ui-avatars.com/api/?name=${
+    user.name
+  }&background=${theme.colors.secondary.replace(
+    '#',
+    '',
+  )}&color=${theme.colors.primary.replace('#', '')}&length=1`;
 
   const formatToLongDate = (value: string | number | Date): string => {
     return Intl.DateTimeFormat('pt-BR', {
@@ -188,11 +195,13 @@ export function Dashboard() {
             <UserWrapper>
               <UserInfo>
                 <Avatar
-                  source={{ uri: 'https://github.com/joaobispo2077.png' }}
+                  source={{
+                    uri: user.photo || defaultAvatar,
+                  }}
                 />
                 <User>
                   <UserGreeting>Olá,</UserGreeting>
-                  <UserName>João</UserName>
+                  <UserName>{user.name}</UserName>
                 </User>
               </UserInfo>
               <LogoutButton onPress={signOut}>
