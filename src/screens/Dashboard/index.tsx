@@ -38,7 +38,7 @@ export interface Transaction {
 
 export interface HighlightHeader {
   amount: string;
-  lastDate: string | undefined;
+  lastDate: string;
 }
 export interface HighlightTransactions {
   income: HighlightHeader;
@@ -101,20 +101,33 @@ export function Dashboard() {
       },
     );
 
-    const lastIncome = Math.max(
-      ...recoveredTransactions
-        .filter((transaction) => transaction.type === 'income')
-        .map((transaction) => new Date(transaction.date).getTime()),
+    const filteredIncomes = recoveredTransactions.filter(
+      (transaction) => transaction.type === 'income',
     );
+    const lastIncome =
+      filteredIncomes && filteredIncomes.length > 0
+        ? Math.max(
+            ...filteredIncomes.map((transaction) =>
+              new Date(transaction.date).getTime(),
+            ),
+          )
+        : 0;
 
-    const lastOutcome = Math.max(
-      ...recoveredTransactions
-        .filter((transaction) => transaction.type === 'outcome')
-        .map((transaction) => new Date(transaction.date).getTime()),
+    const filteredOutcomes = recoveredTransactions.filter(
+      (transaction) => transaction.type === 'outcome',
     );
+    const lastOutcome =
+      filteredOutcomes && filteredOutcomes.length > 0
+        ? Math.max(
+            ...filteredOutcomes.map((transaction) =>
+              new Date(transaction.date).getTime(),
+            ),
+          )
+        : 0;
 
     const totalTransactionsCurrency =
       transactionsHeaders.income - transactionsHeaders.outcome;
+
     const lastDate = Math.max(lastIncome, lastOutcome);
     const firstDate = Math.min(
       Math.min(
@@ -132,15 +145,22 @@ export function Dashboard() {
     const intervalTotal = `${formatToLongDate(firstDate)} à ${formatToLongDate(
       lastDate,
     )}`;
+    console.log('running', transactionsHeaders);
 
     setHighlightTransactions({
       income: {
         amount: formatToCurrency(transactionsHeaders.income),
-        lastDate: formatToLongDate(lastIncome),
+        lastDate:
+          lastIncome === 0
+            ? 'Não há transações'
+            : `Última entrada dia ${formatToLongDate(lastIncome)}`,
       },
       outcome: {
         amount: formatToCurrency(transactionsHeaders.outcome),
-        lastDate: formatToLongDate(lastOutcome),
+        lastDate:
+          lastOutcome === 0
+            ? 'Não há transações'
+            : `Última saída dia ${formatToLongDate(lastOutcome)}`,
       },
       total: {
         amount: formatToCurrency(totalTransactionsCurrency),
@@ -150,7 +170,7 @@ export function Dashboard() {
   };
 
   const loadTransactions = async () => {
-    const collectionKey = '@gofinances:transactions';
+    const collectionKey = `@gofinances:transactions_user:${user.email}`;
 
     const response = await AsyncStorage.getItem(collectionKey);
     if (response) {
@@ -214,13 +234,13 @@ export function Dashboard() {
               card="income"
               title={'Entradas'}
               amount={highlightTransactions?.income?.amount}
-              lastTransaction={`Última entrada dia ${highlightTransactions?.income?.lastDate}`}
+              lastTransaction={highlightTransactions?.income?.lastDate}
             />
             <HighlightCard
               card="outcome"
               title={'Saídas'}
               amount={highlightTransactions?.outcome?.amount}
-              lastTransaction={`Última entrada dia ${highlightTransactions?.outcome?.lastDate}`}
+              lastTransaction={highlightTransactions?.outcome?.lastDate}
             />
             <HighlightCard
               card="total"
