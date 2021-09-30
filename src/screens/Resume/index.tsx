@@ -12,7 +12,7 @@ import { useTheme } from 'styled-components';
 import { VictoryPie } from 'victory-native';
 
 import { HistoryCard } from '../../components/HistoryCard';
-import config from '../../config';
+import { useAuth } from '../../hooks/useAuth';
 import { categories } from '../../utils/categories';
 import { formatToCurrency } from '../../utils/currency';
 import { Transaction } from '../Dashboard';
@@ -38,6 +38,8 @@ export const Resume = () => {
   const theme = useTheme();
   const bottomTabBarHeight = useBottomTabBarHeight();
 
+  const { user } = useAuth();
+
   const [isLoading, setIsLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] =
@@ -56,7 +58,7 @@ export const Resume = () => {
   const loadTransactionsTotalByCategory = async () => {
     setIsLoading(true);
 
-    const transactionsKey = config.asyncStorage.keys.transactions;
+    const transactionsKey = `@gofinances:transactions_user:${user.email}`;
 
     const response = await AsyncStorage.getItem(transactionsKey);
     if (response) {

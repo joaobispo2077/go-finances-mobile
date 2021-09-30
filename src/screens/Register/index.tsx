@@ -13,6 +13,7 @@ import { Button } from '../../components/Forms/Button';
 import { CategorySelectButton } from '../../components/Forms/CategorySelectButton';
 import { InputForm } from '../../components/Forms/InputForm';
 import { TransactionTypeButton } from '../../components/Forms/TransactionTypeButton';
+import { useAuth } from '../../hooks/useAuth';
 import { RootBottomTabParamList } from '../../routes/app.routes';
 import { CategorySelect } from '../CategorySelect';
 import {
@@ -41,6 +42,8 @@ const schema = yup.object().shape({
 export function Register() {
   const navigation =
     useNavigation<BottomTabNavigationProp<RootBottomTabParamList>>();
+
+  const { user } = useAuth();
 
   const [transactionType, setTransactionType] = useState('');
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -101,7 +104,7 @@ export function Register() {
     console.log(transaction);
 
     try {
-      const collectionKey = '@gofinances:transactions';
+      const collectionKey = `@gofinances:transactions_user:${user.email}`;
 
       const oldTransactions = await AsyncStorage.getItem(collectionKey);
       const newTransactions = oldTransactions
