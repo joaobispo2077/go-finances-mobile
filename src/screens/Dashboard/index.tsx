@@ -163,8 +163,8 @@ export function Dashboard() {
 
       loadTransactionsHighlight(recoveredTransactions);
       setTransactions(formattedTransaction);
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   useFocusEffect(

@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect, useCallback } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AppleAuthentication from 'expo-apple-authentication';
@@ -29,7 +29,10 @@ type AuthResponse = {
 export const AuthContext = createContext({} as AuthContextProps);
 
 export const AuthProvider: React.FC = ({ children }) => {
+  const userStorageKey = '@gofinances:user';
+
   const [user, setUser] = useState<IUser>({} as IUser);
+  const [userStorageLoading, setUserStorageLoading] = useState(true);
 
   async function signInWithGoogle() {
     try {
@@ -60,10 +63,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         };
 
         setUser(userLogged);
-        await AsyncStorage.setItem(
-          '@gofinances:user',
-          JSON.stringify(userLogged),
-        );
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
       }
     } catch (err) {
       console.log('error when trying to sign with google', err);
@@ -90,16 +90,32 @@ export const AuthProvider: React.FC = ({ children }) => {
 
         setUser(userLoggged);
 
-        await AsyncStorage.setItem(
-          '@gofinances:user',
-          JSON.stringify(userLoggged),
-        );
+        await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLoggged));
       }
     } catch (err) {
       console.log('error when trying to sign with apple', err);
       throw new Error(err as any);
     }
   }
+
+  const loadUserFromAsyncStorage = useCallback(async () => {
+    try {
+      console.log('is loading', userStorageLoading);
+      const storedUser = await AsyncStorage.getItem(userStorageKey);
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+
+      setUserStorageLoading(false);
+    } catch (err) {
+      console.log('error when trying to load user from async storage', err);
+      throw new Error(err as any);
+    }
+  }, [userStorageLoading]);
+
+  useEffect(() => {
+    loadUserFromAsyncStorage();
+  }, [loadUserFromAsyncStorage]);
 
   return (
     <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
