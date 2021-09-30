@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard } from '../../components/TransactionCard';
+import { useAuth } from '../../hooks/useAuth';
 import { formatToCurrency } from '../../utils/currency';
 import {
   Container,
@@ -46,6 +47,7 @@ export interface HighlightTransactions {
 }
 
 export function Dashboard() {
+  const { signOut } = useAuth();
   const theme = useTheme();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -193,7 +195,7 @@ export function Dashboard() {
                   <UserName>João</UserName>
                 </User>
               </UserInfo>
-              <LogoutButton>
+              <LogoutButton onPress={signOut}>
                 <Icon name="power" />
               </LogoutButton>
             </UserWrapper>

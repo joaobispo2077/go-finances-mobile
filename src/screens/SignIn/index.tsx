@@ -1,6 +1,8 @@
-import React from 'react';
-import { Alert } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, ActivityIndicator } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
+
+import { useTheme } from 'styled-components';
 
 import AppleLogo from '../../assets/apple_logo.svg';
 import GoFinancesLogo from '../../assets/gofinances_logotipo.svg';
@@ -18,23 +20,32 @@ import {
 } from './styles';
 
 export const SignIn = () => {
+  const [isLoading, setIsloading] = useState(false);
+
   const { signInWithGoogle, signInWithApple } = useAuth();
+  const theme = useTheme();
 
   const handleSignInWithGoogle = async () => {
     try {
-      await signInWithGoogle();
+      setIsloading(true);
+      return await signInWithGoogle();
     } catch (err) {
       console.error(err);
       Alert.alert('Não foi possível conectar a conta Google.');
+    } finally {
+      setIsloading(false);
     }
   };
 
   const handleSignInWithApple = async () => {
     try {
-      await signInWithApple();
+      setIsloading(true);
+      return await signInWithApple();
     } catch (err) {
       console.error(err);
       Alert.alert('Não foi possível conectar a conta Apple.');
+    } finally {
+      setIsloading(false);
     }
   };
 
@@ -63,6 +74,10 @@ export const SignIn = () => {
             onPress={handleSignInWithApple}
           />
         </LoginButtons>
+
+        {isLoading && (
+          <ActivityIndicator color={theme.colors.primary} size="large" />
+        )}
       </Footer>
     </Container>
   );

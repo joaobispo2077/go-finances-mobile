@@ -15,8 +15,10 @@ interface IUser {
 
 type AuthContextProps = {
   user: IUser;
+  userStorageLoading: boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithApple: () => Promise<void>;
+  signOut: () => Promise<void>;
 };
 
 type AuthResponse = {
@@ -98,9 +100,13 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
+  async function signOut() {
+    await AsyncStorage.removeItem(userStorageKey);
+    setUser({} as IUser);
+  }
+
   const loadUserFromAsyncStorage = useCallback(async () => {
     try {
-      console.log('is loading', userStorageLoading);
       const storedUser = await AsyncStorage.getItem(userStorageKey);
       if (storedUser) {
         setUser(JSON.parse(storedUser));
@@ -111,14 +117,22 @@ export const AuthProvider: React.FC = ({ children }) => {
       console.log('error when trying to load user from async storage', err);
       throw new Error(err as any);
     }
-  }, [userStorageLoading]);
+  }, []);
 
   useEffect(() => {
     loadUserFromAsyncStorage();
   }, [loadUserFromAsyncStorage]);
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithApple }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        signInWithGoogle,
+        signInWithApple,
+        signOut,
+        userStorageLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
