@@ -27,6 +27,7 @@ import {
   MonthSelectIcon,
   MonthTitle,
   LoadingContainer,
+  Text,
 } from './styles';
 
 type CategoryAmount = typeof categories[0] & {
@@ -101,6 +102,7 @@ export const Resume = () => {
       );
 
       setTotalByCategories(filteredCategoriesTotal);
+
       setIsLoading(false);
     }
   };
@@ -156,6 +158,9 @@ export const Resume = () => {
                 <MonthSelectIcon name="chevron-right" />
               </MonthSelectButton>
             </MonthSelect>
+            {totalByCategories && totalByCategories.length === 0 && (
+              <Text>Não há nenhuma transação de gasto ainda.</Text>
+            )}
 
             <ChartContainer>
               <VictoryPie

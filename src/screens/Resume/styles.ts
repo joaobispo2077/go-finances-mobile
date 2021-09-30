@@ -62,3 +62,13 @@ export const MonthTitle = styled.Text`
   font-size: ${RFValue(20)}px;
   color: ${({ theme }) => theme.colors.text_dark};
 `;
+
+export const Text = styled.Text`
+  font-family: ${({ theme }) => theme.fonts.regular};
+  font-size: ${RFValue(14)}px;
+  color: ${({ theme }) => theme.colors.primary};
+
+  text-align: center;
+
+  margin-top: ${RFValue(200)}px;
+`;
